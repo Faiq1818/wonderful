@@ -1,3 +1,5 @@
+mod config;
+
 use color_eyre::Result;
 use crossterm::event::{self, Event, KeyCode};
 use ratatui::{
