@@ -18,6 +18,10 @@ fn main() -> Result<()> {
     color_eyre::install()?;
     let mut terminal = ratatui::init();
 
+    let config_path = config::check_config_path::get_dotconfig_path("wonderful", "wonderful.toml");
+    config::check_config_path::ensure_config_exists(&config_path);
+    config::scan_toml::scan_toml(&config_path);
+
     let mut selected = 0;
     let mut state = AppState::MainMenu;
 
