@@ -1,33 +1,24 @@
-use serde::Deserialize;
-use std::fs;
-use std::path::PathBuf;
-//use toml::Table;
+use std::process::Command;
+use toml;
 
-#[derive(Deserialize, Debug)]
-struct TomlFile {
-    items: Items,
-}
+pub type TomlFile = std::collections::HashMap<String, std::collections::HashMap<String, String>>;
 
-#[derive(Deserialize, Debug)]
-struct Items {
-    first: String,
-    second: String,
-}
-
-pub fn scan_toml(config_path: &PathBuf) {
+pub fn scan_toml(config_path: &std::path::PathBuf, selected_item: &str) {
     assert!(config_path.exists(), "example.toml does not exist");
 
-    let file = fs::read(config_path)
-        .expect("could not read example.toml")
-        .iter()
-        .map(|c| *c as char)
-        .collect::<String>();
-
-    println!("{file}");
-    
     let file_str = std::fs::read_to_string(config_path).unwrap();
-    let tomlfile: TomlFile = toml::from_str(&file_str).unwrap();
+    let parsed: TomlFile = toml::from_str(&file_str).expect("invalid toml structure");
 
-    println!("{}", tomlfile.items.first);
-    println!("{}", tomlfile.items.second);
+    for (_section, kvs) in &parsed {
+        for (key, val) in kvs {
+            //println!("{} = {}", key, val);
+            if selected_item == key {
+                //let _ = Command::new("kitty").arg("nvim").spawn();
+                let args: Vec<&str> = val.split_whitespace().collect();
+                if !args.is_empty() {
+                    let _ = Command::new(args[0]).args(&args[1..]).spawn();
+                }
+            }
+        }
+    }
 }

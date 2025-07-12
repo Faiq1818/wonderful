@@ -1,17 +1,11 @@
 mod config;
+mod draw;
 
 use color_eyre::Result;
 use crossterm::event::{self, Event, KeyCode};
-use ratatui::{
-    Frame,
-    prelude::*,
-    widgets::{Block, Borders, Paragraph},
-};
-use std::process::Command;
 
 enum AppState {
     MainMenu,
-    ScreenshotMenu,
 }
 
 fn main() -> Result<()> {
@@ -20,18 +14,16 @@ fn main() -> Result<()> {
 
     let config_path = config::check_config_path::get_dotconfig_path("wonderful", "wonderful.toml");
     config::check_config_path::ensure_config_exists(&config_path);
-    config::scan_toml::scan_toml(&config_path);
 
     let mut selected = 0;
-    let mut state = AppState::MainMenu;
+    let state = AppState::MainMenu;
+
+    let items = match state {
+        AppState::MainMenu => vec!["TomlFolder", "OpenRustProject", "HyprlandConfig", "Dolphin"],
+    };
 
     loop {
-        let items = match state {
-            AppState::MainMenu => vec!["Screenshot", "Item 2", "Item 3", "Item 4"],
-            AppState::ScreenshotMenu => vec!["Fullscreen", "Snippet"],
-        };
-
-        terminal.draw(|f| draw(f, selected, &items))?;
+        terminal.draw(|f| draw::draw::draw(f, selected, &items))?;
 
         match event::read()? {
             Event::Key(key) => match key.code {
@@ -46,28 +38,10 @@ fn main() -> Result<()> {
                     }
                 }
 
-                KeyCode::Enter => match state {
-                    AppState::MainMenu => match selected {
-                        0 => {
-                            state = AppState::ScreenshotMenu;
-                            selected = 0
-                        }
-                        _ => {}
-                    },
-                    AppState::ScreenshotMenu => {
-                        match selected {
-                            0 => {
-                                // Aksi untuk "Fullscreen"
-                                let _ = Command::new("grim").arg("-l").arg("0").spawn();
-                            }
-                            1 => {
-                                // Aksi untuk "Snippet"
-                                println!("Snippet dipilih");
-                            }
-                            _ => {}
-                        }
-                    }
-                },
+                KeyCode::Enter => {
+                    config::scan_toml::scan_toml(&config_path, &items[selected]);
+                    println!("{}", items[selected])
+                }
 
                 KeyCode::Char('q') => break,
                 _ => {}
@@ -77,34 +51,4 @@ fn main() -> Result<()> {
     }
     ratatui::restore();
     Ok(())
-}
-
-fn draw(frame: &mut Frame, selected: usize, items: &[&str]) {
-    let layout = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints(vec![Constraint::Percentage(10), Constraint::Percentage(90)])
-        .split(frame.area());
-
-    let mut text = Text::default();
-    for (i, item) in items.iter().enumerate() {
-        if i == selected {
-            text.extend(Text::styled(
-                format!("> {}\n", item),
-                Style::default()
-                    .fg(Color::Yellow)
-                    .add_modifier(Modifier::BOLD),
-            ));
-        } else {
-            text.extend(Text::raw(format!("  {}\n", item)));
-        }
-    }
-
-    frame.render_widget(
-        Paragraph::new("").block(Block::default().title("Find").borders(Borders::ALL)),
-        layout[0],
-    );
-    frame.render_widget(
-        Paragraph::new(text).block(Block::default().title("Apps").borders(Borders::ALL)),
-        layout[1],
-    );
 }
