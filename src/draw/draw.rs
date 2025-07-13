@@ -4,7 +4,7 @@ use ratatui::{
     widgets::{Block, Borders, Paragraph},
 };
 
-pub fn draw(frame: &mut Frame, selected: usize, items: &[&str]) {
+pub fn draw(frame: &mut Frame, selected: usize, items: &[String]) {
     let layout = Layout::default()
         .direction(Direction::Vertical)
         .constraints(vec![Constraint::Percentage(10), Constraint::Percentage(90)])

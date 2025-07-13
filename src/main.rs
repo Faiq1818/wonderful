@@ -4,9 +4,9 @@ mod draw;
 use color_eyre::Result;
 use crossterm::event::{self, Event, KeyCode};
 
-enum AppState {
-    MainMenu,
-}
+//enum AppState {
+//    MainMenu,
+//}
 
 fn main() -> Result<()> {
     color_eyre::install()?;
@@ -16,11 +16,14 @@ fn main() -> Result<()> {
     config::check_config_path::ensure_config_exists(&config_path);
 
     let mut selected = 0;
-    let state = AppState::MainMenu;
+    //let state = AppState::MainMenu;
 
-    let items = match state {
-        AppState::MainMenu => vec!["TomlFolder", "OpenRustProject", "HyprlandConfig", "Dolphin"],
-    };
+    //let mut items = match state {
+    //    AppState::MainMenu => vec!["TomlFolder", "OpenRustProject", "HyprlandConfig", "Dolphin"],
+    //};
+    //items = vec!["TomlFolder", "OpenRustProject", "HyprlandConfig", "Dolphin", "test"];
+    
+    let items = config::scan_toml::get_items_name(&config_path);
 
     loop {
         terminal.draw(|f| draw::draw::draw(f, selected, &items))?;
@@ -41,6 +44,10 @@ fn main() -> Result<()> {
                 KeyCode::Enter => {
                     config::scan_toml::scan_toml(&config_path, &items[selected]);
                     println!("{}", items[selected])
+                }
+
+                KeyCode::Char('t') => {
+                    config::scan_toml::get_items_name(&config_path);
                 }
 
                 KeyCode::Char('q') => break,

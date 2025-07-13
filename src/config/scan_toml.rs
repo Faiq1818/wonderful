@@ -22,3 +22,21 @@ pub fn scan_toml(config_path: &std::path::PathBuf, selected_item: &str) {
         }
     }
 }
+
+pub fn get_items_name(config_path: &std::path::PathBuf) -> Vec<String> {
+    let file_str = std::fs::read_to_string(config_path).unwrap();
+    let parsed: TomlFile = toml::from_str(&file_str).expect("invalid toml structure");
+
+    let mut items = vec![];
+    for (_section, kvs) in &parsed {
+        for (key, _val) in kvs {
+            let args: Vec<&str> = key.split_whitespace().collect();
+            
+            for s in args {
+                items.push(s.to_string());
+            }
+
+        }
+    }
+    items
+}
