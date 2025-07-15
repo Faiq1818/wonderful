@@ -22,18 +22,19 @@ fn main() -> Result<()> {
     //    AppState::MainMenu => vec!["TomlFolder", "OpenRustProject", "HyprlandConfig", "Dolphin"],
     //};
     //items = vec!["TomlFolder", "OpenRustProject", "HyprlandConfig", "Dolphin", "test"];
-    
+
     let items = config::scan_toml::get_items_name(&config_path);
 
     loop {
         terminal.draw(|f| draw::draw::draw(f, selected, &items))?;
 
-        match event::read()? {
-            Event::Key(key) => match key.code {
+        if let Event::Key(key) = event::read()? {
+            match key.code {
                 KeyCode::Up => {
-                    if selected > 0 {
-                        selected -= 1;
-                    }
+                    //if selected > 0 {
+                    //    selected -= 1;
+                    //}
+                    selected = selected.saturating_sub(1);
                 }
                 KeyCode::Down => {
                     if selected < items.len() - 1 {
@@ -52,8 +53,7 @@ fn main() -> Result<()> {
 
                 KeyCode::Char('q') => break,
                 _ => {}
-            },
-            _ => {}
+            }
         }
     }
     ratatui::restore();
