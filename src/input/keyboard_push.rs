@@ -9,9 +9,11 @@ pub fn keyboard_push(
 ) -> Result<bool, Box<dyn std::error::Error>> {
     if let Event::Key(key) = event::read()? {
         match key.code {
-            //keyCode::Char(c) =>
-            KeyCode::Tab => {
-                *find_string = "world".to_string()
+            KeyCode::Char(c) => {
+                find_string.push(c);
+            }
+            KeyCode::Backspace => {
+                find_string.pop();
             }
             KeyCode::Up => {
                 *selected = selected.saturating_sub(1);
@@ -28,11 +30,7 @@ pub fn keyboard_push(
                 println!("{}", items[*selected])
             }
 
-            KeyCode::Char('t') => {
-                config::scan_toml::get_items_name(config_path);
-            }
-
-            KeyCode::Char('q') => {
+            KeyCode::Esc => {
                 return Ok(true);
             }
             _ => {}
