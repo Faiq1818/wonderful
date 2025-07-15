@@ -4,7 +4,7 @@ use ratatui::{
     widgets::{Block, Borders, Paragraph},
 };
 
-pub fn draw(frame: &mut Frame, selected: usize, items: &[String]) {
+pub fn draw(frame: &mut Frame, selected: usize, items: &[String], find_string: &mut String) {
     let layout = Layout::default()
         .direction(Direction::Vertical)
         .constraints(vec![Constraint::Percentage(10), Constraint::Percentage(90)])
@@ -25,7 +25,7 @@ pub fn draw(frame: &mut Frame, selected: usize, items: &[String]) {
     }
 
     frame.render_widget(
-        Paragraph::new("").block(Block::default().title("Find").borders(Borders::ALL)),
+        Paragraph::new(find_string.clone()).block(Block::default().title("Find").borders(Borders::ALL)),
         layout[0],
     );
     frame.render_widget(

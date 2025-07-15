@@ -1,15 +1,22 @@
 use crate::config;
 use crossterm::event::{self, Event, KeyCode};
 
-pub fn keyboard_push(selected: &mut usize, items: &[String], config_path: &std::path::PathBuf)-> Result<bool, Box<dyn std::error::Error>>  {
+pub fn keyboard_push(
+    selected: &mut usize,
+    items: &[String],
+    config_path: &std::path::PathBuf,
+    find_string: &mut String,
+) -> Result<bool, Box<dyn std::error::Error>> {
     if let Event::Key(key) = event::read()? {
         match key.code {
+            //keyCode::Char(c) =>
+            KeyCode::Tab => {
+                *find_string = "world".to_string()
+            }
             KeyCode::Up => {
-                //if selected > 0 {
-                //    selected -= 1;
-                //}
                 *selected = selected.saturating_sub(1);
             }
+
             KeyCode::Down => {
                 if *selected < items.len() - 1 {
                     *selected += 1;
