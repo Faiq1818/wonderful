@@ -1,61 +1,27 @@
 mod config;
 mod draw;
+mod input;
 
-use color_eyre::Result;
-use crossterm::event::{self, Event, KeyCode};
+//use color_eyre::Result;
 
-//enum AppState {
-//    MainMenu,
-//}
-
-fn main() -> Result<()> {
-    color_eyre::install()?;
+fn main() {
+    //color_eyre::install()?;
     let mut terminal = ratatui::init();
 
     let config_path = config::check_config_path::get_dotconfig_path("wonderful", "wonderful.toml");
     config::check_config_path::ensure_config_exists(&config_path);
 
     let mut selected = 0;
-    //let state = AppState::MainMenu;
-
-    //let mut items = match state {
-    //    AppState::MainMenu => vec!["TomlFolder", "OpenRustProject", "HyprlandConfig", "Dolphin"],
-    //};
-    //items = vec!["TomlFolder", "OpenRustProject", "HyprlandConfig", "Dolphin", "test"];
 
     let items = config::scan_toml::get_items_name(&config_path);
 
     loop {
-        terminal.draw(|f| draw::draw::draw(f, selected, &items))?;
-
-        if let Event::Key(key) = event::read()? {
-            match key.code {
-                KeyCode::Up => {
-                    //if selected > 0 {
-                    //    selected -= 1;
-                    //}
-                    selected = selected.saturating_sub(1);
-                }
-                KeyCode::Down => {
-                    if selected < items.len() - 1 {
-                        selected += 1;
-                    }
-                }
-
-                KeyCode::Enter => {
-                    config::scan_toml::scan_toml(&config_path, &items[selected]);
-                    println!("{}", items[selected])
-                }
-
-                KeyCode::Char('t') => {
-                    config::scan_toml::get_items_name(&config_path);
-                }
-
-                KeyCode::Char('q') => break,
-                _ => {}
-            }
+        terminal.draw(|f| draw::draw::draw(f, selected, &items));
+        
+        if input::keyboard_push::keyboard_push(&mut selected, &items, &config_path).expect("REASON") {
+            break;
         }
+
     }
     ratatui::restore();
-    Ok(())
 }
