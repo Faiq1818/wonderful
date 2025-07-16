@@ -6,11 +6,13 @@ pub fn keyboard_push(
     items: &[String],
     config_path: &std::path::PathBuf,
     find_string: &mut String,
+    focus: &mut String,
 ) -> Result<bool, Box<dyn std::error::Error>> {
     if let Event::Key(key) = event::read()? {
         match key.code {
             KeyCode::Char(c) => {
                 find_string.push(c);
+                *focus = String::from("find_section");
             }
             KeyCode::Backspace => {
                 find_string.pop();

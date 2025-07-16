@@ -10,10 +10,11 @@ fn main() {
     let mut find_string = String::from("");
 
     let items = config::scan_toml::get_items_name(&config_path);
+    let mut focus = String::from("find_section");
 
     loop {
         //draw the ratatui
-        let _ = terminal.draw(|f| draw::draw::draw(f, selected, &items, &mut find_string));
+        let _ = terminal.draw(|f| draw::draw::draw(f, selected, &items, &mut find_string, &mut focus));
 
         //cheking the keyboard input
         if input::keyboard_push::keyboard_push(
@@ -21,6 +22,7 @@ fn main() {
             &items,
             &config_path,
             &mut find_string,
+            &mut focus,
         )
         .expect("REASON")
         {
