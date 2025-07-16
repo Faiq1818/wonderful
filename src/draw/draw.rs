@@ -11,6 +11,18 @@ pub fn draw(
     find_string: &mut String,
     focus: &mut String,
 ) {
+    let find_section_border = if *focus == "find_section" {
+        Style::default().fg(Color::Red)
+    } else {
+        Style::default().fg(Color::White)
+    };
+
+    let apps_section_border = if *focus == "apps_section" {
+        Style::default().fg(Color::Red)
+    } else {
+        Style::default().fg(Color::White)
+    };
+
     let layout = Layout::default()
         .direction(Direction::Vertical)
         .constraints(vec![Constraint::Percentage(10), Constraint::Percentage(90)])
@@ -20,7 +32,7 @@ pub fn draw(
     for (i, item) in items.iter().enumerate() {
         if i == selected {
             text.extend(Text::styled(
-                format!("> {}\n", item),
+                format!("--> {}\n", item),
                 Style::default()
                     .fg(Color::Yellow)
                     .add_modifier(Modifier::BOLD),
@@ -31,12 +43,21 @@ pub fn draw(
     }
 
     frame.render_widget(
-        Paragraph::new(find_string.clone())
-            .block(Block::default().title("Find").borders(Borders::ALL)),
+        Paragraph::new(find_string.clone()).block(
+            Block::default()
+                .title("Find")
+                .borders(Borders::ALL)
+                .border_style(find_section_border),
+        ),
         layout[0],
     );
     frame.render_widget(
-        Paragraph::new(text).block(Block::default().title("Apps").borders(Borders::ALL)),
+        Paragraph::new(text).block(
+            Block::default()
+                .title("Apps")
+                .borders(Borders::ALL)
+                .border_style(apps_section_border),
+        ),
         layout[1],
     );
 }

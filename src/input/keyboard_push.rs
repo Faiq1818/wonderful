@@ -19,12 +19,14 @@ pub fn keyboard_push(
             }
             KeyCode::Up => {
                 *selected = selected.saturating_sub(1);
+                *focus = String::from("apps_section");
             }
 
             KeyCode::Down => {
                 if *selected < items.len() - 1 {
                     *selected += 1;
                 }
+                *focus = String::from("apps_section");
             }
 
             KeyCode::Enter => {
