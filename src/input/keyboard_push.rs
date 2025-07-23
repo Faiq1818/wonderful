@@ -21,8 +21,17 @@ pub fn keyboard_push(
                 *selected = selected.saturating_sub(1);
                 *focus = String::from("apps_section");
             }
-
+            KeyCode::BackTab => {
+                *selected = selected.saturating_sub(1);
+                *focus = String::from("apps_section");
+            }
             KeyCode::Down => {
+                if *selected < items.len() - 1 {
+                    *selected += 1;
+                }
+                *focus = String::from("apps_section");
+            }
+            KeyCode::Tab => {
                 if *selected < items.len() - 1 {
                     *selected += 1;
                 }
@@ -31,7 +40,8 @@ pub fn keyboard_push(
 
             KeyCode::Enter => {
                 config::scan_toml::scan_toml(config_path, &items[*selected]);
-                println!("{}", items[*selected])
+                //println!("{}", items[*selected])
+                return Ok(true);
             }
 
             KeyCode::Esc => {

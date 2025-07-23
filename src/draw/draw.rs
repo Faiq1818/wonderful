@@ -43,12 +43,14 @@ pub fn draw(
     }
 
     frame.render_widget(
-        Paragraph::new(find_string.clone()).block(
-            Block::default()
-                .title("Find")
-                .borders(Borders::ALL)
-                .border_style(find_section_border),
-        ),
+        Paragraph::new(find_string.clone())
+            .block(
+                Block::default()
+                    .title("Find")
+                    .borders(Borders::ALL)
+                    .border_style(find_section_border),
+            )
+            .alignment(Alignment::Center),
         layout[0],
     );
     frame.render_widget(

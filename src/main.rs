@@ -14,7 +14,8 @@ fn main() {
 
     loop {
         //draw the ratatui
-        let _ = terminal.draw(|f| draw::draw::draw(f, selected, &items, &mut find_string, &mut focus));
+        let _ =
+            terminal.draw(|f| draw::draw::draw(f, selected, &items, &mut find_string, &mut focus));
 
         //cheking the keyboard input
         if input::keyboard_push::keyboard_push(

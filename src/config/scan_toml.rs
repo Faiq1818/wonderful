@@ -12,8 +12,7 @@ pub fn scan_toml(config_path: &std::path::PathBuf, selected_item: &str) {
     for (section, kvs) in &parsed {
         println!("{}", section);
         if selected_item == section {
-            for (key, val) in kvs {
-                println!("{}",key);
+            for val in kvs.values() {
                 let args: Vec<&str> = val.split_whitespace().collect();
                 if !args.is_empty() {
                     let _ = Command::new(args[0]).args(&args[1..]).spawn();
