@@ -3,7 +3,7 @@ use crossterm::event::{self, Event, KeyCode};
 
 pub fn keyboard_push(
     selected: &mut usize,
-    items: &[String],
+    items: &[&String],
     config_path: &std::path::PathBuf,
     find_string: &mut String,
     focus: &mut String,
@@ -13,9 +13,11 @@ pub fn keyboard_push(
             KeyCode::Char(c) => {
                 find_string.push(c);
                 *focus = String::from("find_section");
+                *selected = 0;
             }
             KeyCode::Backspace => {
                 find_string.pop();
+                *selected = 0;
             }
             KeyCode::Up => {
                 *selected = selected.saturating_sub(1);

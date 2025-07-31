@@ -7,7 +7,7 @@ use ratatui::{
 pub fn draw(
     frame: &mut Frame,
     selected: usize,
-    items: &[String],
+    items: &[&String],
     find_string: &mut String,
     focus: &mut String,
 ) {
@@ -29,7 +29,7 @@ pub fn draw(
         .split(frame.area());
 
     let mut text = Text::default();
-    for (i, item) in items.iter().enumerate() {
+    for (i, &item) in items.iter().enumerate() {
         if i == selected {
             text.extend(Text::styled(
                 format!("--> {}\n", item),
