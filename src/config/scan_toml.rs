@@ -1,3 +1,4 @@
+use home;
 use std::process::Command;
 use toml;
 
@@ -8,17 +9,25 @@ pub fn scan_toml(config_path: &std::path::PathBuf, selected_item: &str) {
 
     let file_str = std::fs::read_to_string(config_path).unwrap();
     let parsed: TomlFile = toml::from_str(&file_str).expect("invalid toml structure");
+    let home = home::home_dir();
 
-    for (section, kvs) in &parsed {
-        println!("{}", section);
-        if selected_item == section {
-            for val in kvs.values() {
-                let args: Vec<&str> = val.split_whitespace().collect();
-                if !args.is_empty() {
-                    let _ = Command::new(args[0]).args(&args[1..]).spawn();
+    if let Some(home_dir) = home {
+        for (section, kvs) in &parsed {
+            println!("{}", section);
+            if selected_item == section {
+                for val in kvs.values() {
+                    let args: Vec<&str> = val.split_whitespace().collect();
+                    if !args.is_empty() {
+                        let _ = Command::new(args[0])
+                            .args(&args[1..])
+                            .current_dir(&home_dir)
+                            .spawn();
+                    }
                 }
             }
         }
+    } else {
+        eprintln!("Error: $HOME directory not found, Baka!!");
     }
 }
 
