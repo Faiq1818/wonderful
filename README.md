@@ -2,6 +2,8 @@
 
 Launcher for productivity that can launch many thing at one times, so you can make many items for your projects, build in rust.
 
+![](https://github.com/Faiq1818/wonderful/blob/main/assets/demo.gif)
+
 ### Installing
 
 Clone this repository
