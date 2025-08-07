@@ -22,6 +22,15 @@ Run the program
 
     wonderful
 
+### Hotkeys
+| Hotkey       | Description         |
+|--------------|---------------------|
+| `Esc`        | Quit application    |
+| `↓` or `Tab` | Move down           |
+| `↑` or `Shift + Tab` | Move up             |
+| `Enter`      | Select              |
+| `Other key`  | Typing in Find      |
+
 
 ## Contributing
 
