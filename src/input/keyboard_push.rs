@@ -43,7 +43,6 @@ pub fn keyboard_push(
             KeyCode::Enter => {
                 config::scan_toml::scan_toml(config_path, &items[*selected]);
                 //println!("{}", items[*selected])
-                return Ok(true);
             }
 
             KeyCode::Esc => {
