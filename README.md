@@ -25,10 +25,11 @@ Run the program
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code
-of conduct, and the process for submitting pull requests to us.
+Contributions are open to everyone.  
+Feel free to fork the repository, make changes, and submit a pull request.  
+There is no strict format — just make sure the code is clean and complies with the license.
 
 
 ## License
 
-This project is licensed under the [GPLv3](LICENSE.md)
+This project is licensed under the [GPLv3](LICENSE)
