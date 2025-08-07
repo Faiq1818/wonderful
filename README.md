@@ -14,7 +14,7 @@ Go inside the folder
     
 Build
 
-    cargo build
+    cargo install --path .
 
 Run the program
 
