@@ -1,6 +1,6 @@
 # Wonderful
 
-Launcher for productivity that can launch many thing at one times, so you can make many items for your projects, build in rust.
+A productivity launcher that can launch many things at once, so you can start everything you need in one go. Written in Rust.
 
 ![](https://github.com/Faiq1818/wonderful/blob/main/assets/demo.gif)
 
